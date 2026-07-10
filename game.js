@@ -377,7 +377,7 @@
     if(dx||dy){var len=Math.sqrt(dx*dx+dy*dy);player.x+=(dx/len)*spd;player.y+=(dy/len)*spd;}
     if(touching&&touchX!==null&&touchY!==null){
       var dx=touchX-player.x,dy=touchY-player.y,len=Math.sqrt(dx*dx+dy*dy);
-      if(len>3){player.x+=(dx/len)*Math.min(spd,len);player.y+=(dy/len)*Math.min(spd,len);}
+      if(len>3){var ts=spd*(isMobile?1.8:1);player.x+=(dx/len)*ts;player.y+=(dy/len)*ts;}
     }
     player.x=Math.max(player.w/2,Math.min(W-player.w/2,player.x));
     player.y=Math.max(player.h/2,Math.min(H-player.h/2,player.y));
@@ -489,7 +489,7 @@
     // Particles
     for(var i=particles.length-1;i>=0;i--){var p=particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=0.96;p.vy*=0.96;p.life-=p.dec*dt;if(p.life<=0)particles.splice(i,1);}
     // Trails
-    if(frameCount%(isMobile?8:3)===0){trails.push({x:player.x+rnd(-2,2),y:player.y+player.h/2,sz:rnd(2,3),life:1,c:'#ff6600'});}
+    if(frameCount%(isMobile?12:3)===0){trails.push({x:player.x+rnd(-2,2),y:player.y+player.h/2,sz:rnd(2,3),life:1,c:'#ff6600'});}
     for(var i=trails.length-1;i>=0;i--){var t=trails[i];t.y+=2.5*dt;t.life-=0.06*dt;if(t.life<=0)trails.splice(i,1);}
     // Floating texts
     for(var i=texts.length-1;i>=0;i--){var t=texts[i];t.y-=1.2*dt;t.life-=0.025*dt;if(t.life<=0)texts.splice(i,1);}
@@ -507,7 +507,7 @@
       if(wave%3===0){spawnBoss();}else{wave++;startWave();}}
     }
     // Ambient coins
-    if(frameCount%(isMobile?300:180)===0&&Math.random()<0.3){coinsArr.push({x:rnd(25,W-25),y:-10,vx:rnd(-0.8,0.8),vy:rnd(1.2,2),sz:16,life:450,rot:rnd(0,6),val:Math.random()<0.2?5:1});}
+    if(frameCount%(isMobile?300:180)===0&&Math.random()<0.3&&coinsArr.length<20){coinsArr.push({x:rnd(25,W-25),y:-10,vx:rnd(-0.8,0.8),vy:rnd(1.2,2),sz:16,life:450,rot:rnd(0,6),val:Math.random()<0.2?5:1});}
     // Collisions - bullets vs enemies
     for(var i=bullets.length-1;i>=0;i--){var b=bullets[i];if(!b.friendly)continue;
       // Homing
