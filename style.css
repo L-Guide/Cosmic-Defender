@@ -1,0 +1,521 @@
+/* ============================================
+   COSMIC DEFENDER - Fully Responsive Styles
+   ============================================ */
+
+* {
+  margin: 0; padding: 0; box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%; height: 100%; overflow: hidden;
+}
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #000011; color: #ffffff;
+  user-select: none; -webkit-user-select: none;
+}
+
+/* ============================================
+   LOADING SCREEN
+   ============================================ */
+#loading-screen {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(135deg, #000033 0%, #000066 100%);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 100;
+}
+
+.loader-content { text-align: center; }
+.loader-content p { margin-top: 16px; font-size: 14px; color: #88aaff; }
+
+.spinner {
+  width: 45px; height: 45px;
+  border: 3px solid #1a1a4a; border-top: 3px solid #00aaff;
+  border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;
+}
+
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+.progress-bar {
+  width: 200px; height: 6px; background: #1a1a4a;
+  border-radius: 3px; margin: 12px auto 0; overflow: hidden;
+}
+.progress-bar #progress-fill {
+  height: 100%; background: linear-gradient(90deg, #00aaff, #00ff88);
+  border-radius: 3px; transition: width 0.2s;
+}
+#load-percent { margin-top: 6px; font-size: 12px; color: #5588cc; }
+
+/* ============================================
+   ALL SCREENS - Centered layout
+   ============================================ */
+#main-menu,
+#how-to-play,
+#shop-screen,
+#scores-screen,
+#game-over,
+#level-complete {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  z-index: 50; overflow-y: auto; overflow-x: hidden;
+  padding: 16px 12px;
+}
+
+#how-to-play,
+#scores-screen {
+  justify-content: flex-start;
+  padding-top: 20px;
+}
+
+/* ============================================
+   MAIN MENU
+   ============================================ */
+#main-menu {
+  background: linear-gradient(180deg, #000022 0%, #000044 50%, #000033 100%);
+}
+
+#main-menu h1 {
+  font-size: clamp(28px, 9vw, 48px);
+  font-weight: 900; text-transform: uppercase; letter-spacing: 2px;
+  color: #00aaff; text-shadow: 0 0 15px #00aaff, 0 0 30px #0066ff;
+  margin-bottom: 6px;
+  animation: titlePulse 2s ease-in-out infinite;
+}
+
+@keyframes titlePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+.subtitle {
+  font-size: clamp(11px, 3vw, 15px);
+  color: #6688bb; margin-bottom: 20px;
+}
+
+.menu-buttons {
+  display: flex; flex-direction: column; gap: 8px;
+  width: 100%; max-width: 260px; margin-bottom: 16px;
+}
+
+.menu-btn {
+  width: 100%; padding: 12px 20px;
+  font-size: clamp(14px, 4vw, 18px);
+  font-weight: bold; color: #fff;
+  background: linear-gradient(180deg, #0066cc 0%, #004499 100%);
+  border: 2px solid #0088ff; border-radius: 10px;
+  cursor: pointer; transition: all 0.15s;
+  text-transform: uppercase; letter-spacing: 2px;
+}
+
+.menu-btn:hover {
+  background: linear-gradient(180deg, #0088ff 0%, #0066cc 100%);
+  transform: scale(1.03); box-shadow: 0 0 15px #0088ff;
+}
+
+.menu-btn:active { transform: scale(0.97); }
+
+#player-stats {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  font-size: clamp(11px, 3vw, 14px);
+  color: #88aacc; justify-content: center; width: 100%;
+}
+
+#player-stats span {
+  padding: 5px 10px; background: rgba(0, 100, 200, 0.3);
+  border-radius: 6px; border: 1px solid #0044aa; white-space: nowrap;
+}
+
+.coin-stat { color: #ffdd00 !important; }
+.star-stat { color: #ffdd00 !important; }
+
+/* ============================================
+   HOW TO PLAY
+   ============================================ */
+#how-to-play {
+  background: linear-gradient(180deg, #000022 0%, #000044 100%);
+}
+
+#how-to-play h2 { color: #00aaff; margin-bottom: 12px; }
+
+.instructions {
+  width: 100%; max-width: 320px;
+}
+
+.instructions p {
+  color: #aabbcc; margin: 6px 0;
+  font-size: clamp(12px, 3.2vw, 15px);
+}
+
+.powerup-info {
+  margin-top: 12px; padding: 10px;
+  background: rgba(0, 50, 100, 0.3); border-radius: 8px;
+  border: 1px solid #0044aa; width: 100%;
+}
+
+.powerup-info p {
+  font-size: clamp(11px, 2.8vw, 13px); margin: 5px 0; text-align: left;
+}
+
+.pu-shield { color: #00ffff; font-weight: bold; }
+.pu-speed { color: #ffff00; font-weight: bold; }
+.pu-multishot { color: #ff00ff; font-weight: bold; }
+.pu-health { color: #00ff00; font-weight: bold; }
+.pu-coin { color: #ffdd00; font-weight: bold; }
+.pu-gift { color: #ff44ff; font-weight: bold; }
+.pu-weapon { color: #ff8800; font-weight: bold; }
+.pu-magnet { color: #ff44ff; font-weight: bold; }
+
+/* ============================================
+   SHOP
+   ============================================ */
+#shop-screen {
+  background: linear-gradient(180deg, #0a0025 0%, #15003a 50%, #0a0025 100%);
+  overflow-y: auto;
+  padding-bottom: 16px;
+  justify-content: flex-start;
+  padding-top: 12px;
+}
+
+#shop-screen h2 { color: #ffdd00; text-shadow: 0 0 12px #ffaa00; margin-bottom: 6px; font-size: clamp(20px, 6vw, 28px); }
+
+.shop-coins {
+  font-size: clamp(13px, 3.5vw, 16px);
+  color: #ffdd00; margin-bottom: 6px;
+  padding: 5px 12px; background: rgba(255, 200, 0, 0.1);
+  border: 1px solid #ffaa00; border-radius: 6px;
+}
+
+.shop-tabs {
+  display: flex; gap: 4px; margin-bottom: 6px; width: 100%; max-width: 340px;
+}
+
+.shop-tab {
+  flex: 1; padding: 7px 2px; font-size: clamp(10px, 2.5vw, 12px); font-weight: bold;
+  color: #88aacc; background: rgba(0, 40, 80, 0.4); border: 1px solid #003366;
+  border-radius: 6px; cursor: pointer; transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.shop-tab.active {
+  color: #ffdd00; background: rgba(255, 200, 0, 0.15);
+  border-color: #ffaa00;
+}
+
+.shop-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 5px; width: 100%; max-width: 340px; margin-bottom: 10px;
+  padding-bottom: 8px;
+}
+
+.shop-item {
+  background: rgba(0, 50, 120, 0.4); border: 2px solid #0055aa;
+  border-radius: 8px; padding: 6px 3px; text-align: center;
+  cursor: pointer; transition: all 0.15s;
+}
+
+.shop-item:hover {
+  border-color: #00aaff; background: rgba(0, 80, 180, 0.5);
+}
+
+.shop-item:active { transform: scale(0.96); }
+
+.shop-item.maxed {
+  border-color: #00ff88; background: rgba(0, 100, 50, 0.3);
+  opacity: 0.7; cursor: default;
+}
+
+.shop-item.cant-afford { border-color: #444; opacity: 0.5; }
+
+.shop-icon {
+  font-size: clamp(22px, 7vw, 32px); font-weight: 900;
+  color: #00ccff; text-shadow: 0 0 6px #00aaff;
+  line-height: 1.2;
+}
+
+.emoji-icon {
+  font-size: clamp(20px, 6vw, 32px);
+  text-shadow: none;
+  filter: drop-shadow(0 0 4px rgba(255,255,255,0.3));
+}
+
+.shop-name {
+  font-size: clamp(9px, 2.5vw, 12px); font-weight: bold; color: #fff;
+  margin: 1px 0 0;
+}
+
+.shop-desc {
+  font-size: clamp(7px, 2vw, 9px); color: #88aacc; margin-bottom: 2px;
+}
+
+.shop-cost {
+  font-size: clamp(10px, 2.8vw, 13px); font-weight: bold; color: #ffdd00;
+  display: flex; align-items: center; justify-content: center; gap: 2px;
+}
+
+.coin-icon {
+  display: inline-block; width: auto; height: auto;
+  background: none; color: #ffdd00; border-radius: 0;
+  font-size: clamp(12px, 3vw, 16px); font-weight: 900;
+  line-height: 1; text-align: center;
+}
+
+.shop-level {
+  font-size: clamp(8px, 2.2vw, 10px); color: #66aadd; margin-top: 2px;
+}
+
+/* Consumable item icons */
+.ci-bomb { color: #ff4444 !important; text-shadow: 0 0 8px #ff0000; }
+.ci-nuke { color: #ff8800 !important; text-shadow: 0 0 8px #ff4400; }
+.ci-slow { color: #44aaff !important; text-shadow: 0 0 8px #0066ff; }
+.ci-dboost { color: #ff00ff !important; text-shadow: 0 0 8px #cc00cc; }
+.ci-heal { color: #00ff00 !important; text-shadow: 0 0 8px #00aa00; }
+.ci-megaShield { color: #00ffff !important; text-shadow: 0 0 8px #00aaaa; }
+.ci-rage { color: #ff2200 !important; text-shadow: 0 0 8px #cc0000; }
+.ci-blackhole { color: #aa00ff !important; text-shadow: 0 0 8px #6600cc; }
+
+/* Power upgrade icons */
+.pi-pierce { color: #ff6644 !important; text-shadow: 0 0 8px #ff3300; }
+.pi-explode { color: #ff8800 !important; text-shadow: 0 0 8px #ff4400; }
+.pi-homing { color: #44ccff !important; text-shadow: 0 0 8px #0088ff; }
+.pi-aura { color: #ff4400 !important; text-shadow: 0 0 8px #cc2200; }
+.pi-thorns { color: #00ff88 !important; text-shadow: 0 0 8px #00cc44; }
+.pi-goldrush { color: #ffdd00 !important; text-shadow: 0 0 8px #ccaa00; }
+.pi-laststand { color: #ff2200 !important; text-shadow: 0 0 8px #cc0000; }
+.pi-bulletrain { color: #ff44ff !important; text-shadow: 0 0 8px #cc00cc; }
+.pi-rapidfire { color: #ffaa00 !important; text-shadow: 0 0 8px #ff8800; }
+.pi-bigbullets { color: #ff4488 !important; text-shadow: 0 0 8px #cc0044; }
+.pi-dmgboost { color: #ff0044 !important; text-shadow: 0 0 8px #cc0022; }
+.pi-shieldgen { color: #00ccff !important; text-shadow: 0 0 8px #0088cc; }
+
+.star-cost { color: #ffdd00 !important; text-shadow: 0 0 8px #ccaa00; }
+.star-item { border-color: rgba(255, 221, 0, 0.3) !important; }
+.star-item:hover { border-color: rgba(255, 221, 0, 0.7) !important; box-shadow: 0 0 12px rgba(255, 221, 0, 0.3) !important; }
+
+/* ============================================
+   ITEM BAR (In-game quick use)
+   ============================================ */
+#item-bar {
+  position: fixed; bottom: 8px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 6px; z-index: 25; pointer-events: all;
+  background: rgba(0, 0, 20, 0.7); padding: 5px 8px; border-radius: 10px;
+  border: 1px solid rgba(0, 150, 255, 0.3);
+}
+
+.item-slot {
+  position: relative; width: clamp(44px, 12vw, 56px); height: clamp(44px, 12vw, 56px);
+  background: rgba(0, 40, 80, 0.6); border: 2px solid #003366;
+  border-radius: 8px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; cursor: pointer;
+  transition: all 0.1s; user-select: none;
+}
+
+.item-slot:active { transform: scale(0.9); }
+
+.item-slot.has-item { border-color: #0088ff; }
+
+.item-slot.on-cooldown {
+  opacity: 0.4; border-color: #444; pointer-events: none;
+}
+
+.item-key {
+  position: absolute; top: 1px; left: 3px;
+  font-size: clamp(8px, 2vw, 10px); color: #5588aa; font-weight: bold;
+}
+
+.item-icon {
+  font-size: clamp(16px, 4.5vw, 22px); font-weight: 900;
+  color: #556677; line-height: 1;
+}
+
+.item-slot.has-item .item-icon { color: #00ccff; }
+
+.item-count {
+  position: absolute; bottom: 1px; right: 3px;
+  font-size: clamp(8px, 2vw, 10px); color: #ffdd00; font-weight: bold;
+}
+
+/* ============================================
+   HIGH SCORES
+   ============================================ */
+#scores-screen {
+  background: linear-gradient(180deg, #000022 0%, #000044 100%);
+}
+
+#scores-screen h2 { color: #00aaff; margin-bottom: 12px; }
+
+#scores-list { width: 100%; max-width: 320px; margin-bottom: 16px; }
+
+.score-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 12px; background: rgba(0, 50, 100, 0.3);
+  border-radius: 6px; margin-bottom: 5px; border: 1px solid #003366;
+}
+
+.score-item span:first-child { color: #00aaff; font-weight: bold; min-width: 30px; }
+.score-item span:nth-child(2) { color: #fff; font-weight: bold; flex: 1; text-align: center; }
+.score-item span:last-child { color: #6688aa; min-width: 40px; text-align: right; }
+
+.no-scores { color: #6688aa; padding: 20px; }
+
+/* ============================================
+   GAME CANVAS
+   ============================================ */
+#game-canvas {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;
+}
+
+/* ============================================
+   GAME HUD
+   ============================================ */
+#game-hud {
+  position: fixed; top: 0; left: 0; width: 100%;
+  padding: 6px 8px; display: flex; justify-content: space-between; align-items: flex-start;
+  z-index: 20; pointer-events: none;
+  background: linear-gradient(180deg, rgba(0, 0, 20, 0.85) 0%, rgba(0, 0, 20, 0.4) 60%, transparent 100%);
+}
+
+.hud-left, .hud-center, .hud-right {
+  display: flex; flex-direction: column; gap: 2px;
+}
+
+.hud-center { align-items: center; flex: 1; }
+.hud-right { align-items: flex-end; }
+
+.health-bar {
+  width: clamp(65px, 20vw, 110px); height: 8px;
+  background: #333; border-radius: 4px; overflow: hidden; border: 1px solid #555;
+}
+
+#health-fill {
+  width: 100%; height: 100%; background: #00ff00; transition: width 0.3s;
+}
+
+#health-text {
+  font-size: clamp(10px, 2.8vw, 12px); color: #ddd; font-weight: bold;
+}
+
+#coin-display { color: #ffdd00; font-weight: bold; font-size: clamp(10px, 2.8vw, 12px); }
+#star-display { color: #ffdd00; font-weight: bold; font-size: clamp(10px, 2.8vw, 12px); }
+
+#score-display {
+  font-size: clamp(14px, 4vw, 18px); font-weight: bold; color: #00ffff;
+  text-shadow: 0 0 6px rgba(0,255,255,0.4);
+}
+
+#level-display {
+  font-size: clamp(10px, 2.8vw, 13px); color: #aaccdd; font-weight: bold;
+}
+
+.wave-progress {
+  width: clamp(60px, 20vw, 100px); height: 4px;
+  background: #333; border-radius: 2px; overflow: hidden; margin-top: 2px;
+}
+
+#wave-progress-fill {
+  width: 0%; height: 100%;
+  background: linear-gradient(90deg, #00aaff, #00ffcc);
+  border-radius: 2px; transition: width 0.3s;
+}
+
+#wave-progress-text {
+  font-size: clamp(9px, 2.5vw, 11px); color: #88bbcc;
+}
+
+#wave-display {
+  font-size: clamp(10px, 2.8vw, 13px); color: #aaccdd; font-weight: bold;
+}
+
+#combo-display {
+  font-size: clamp(12px, 3.5vw, 16px); font-weight: bold; color: #00ffff;
+  text-shadow: 0 0 6px rgba(0,255,255,0.4);
+}
+
+/* ============================================
+   PAUSE OVERLAY
+   ============================================ */
+#pause-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex; justify-content: center; align-items: center; z-index: 60;
+}
+
+.pause-content { text-align: center; }
+
+.pause-content h2 {
+  font-size: clamp(28px, 8vw, 40px);
+  color: #00aaff; margin-bottom: 20px;
+}
+
+/* ============================================
+   GAME OVER
+   ============================================ */
+#game-over {
+  background: linear-gradient(180deg, #220000 0%, #440000 100%);
+}
+
+#game-over h2 {
+  color: #ff4444; text-shadow: 0 0 15px #ff0000; margin-bottom: 12px;
+}
+
+.gameover-stats {
+  width: 100%; max-width: 300px; margin-bottom: 16px;
+}
+
+.gameover-stats p {
+  font-size: clamp(13px, 3.8vw, 17px);
+  color: #ccaaaa; margin: 5px 0;
+  display: flex; justify-content: space-between; align-items: center;
+}
+
+.gameover-stats span { color: #fff; font-weight: bold; }
+
+.gameover-buttons {
+  display: flex; gap: 10px; width: 100%; max-width: 300px;
+}
+
+.gameover-buttons .menu-btn { flex: 1; }
+
+/* ============================================
+   LEVEL COMPLETE
+   ============================================ */
+#level-complete {
+  background: linear-gradient(180deg, #002200 0%, #004400 100%);
+}
+
+#level-complete h2 {
+  color: #00ff00; text-shadow: 0 0 15px #00ff00;
+  animation: levelPulse 1s ease-in-out infinite;
+}
+
+@keyframes levelPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+.level-stats {
+  width: 100%; max-width: 300px; margin-bottom: 16px;
+}
+
+.level-stats p {
+  font-size: clamp(14px, 4vw, 18px);
+  color: #aaffaa; margin: 6px 0;
+  display: flex; justify-content: space-between; align-items: center;
+}
+
+.level-stats span {
+  color: #fff; font-weight: bold;
+  font-size: clamp(16px, 5vw, 22px);
+}
+
+/* ============================================
+   HIDDEN
+   ============================================ */
+.hidden { display: none !important; }
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+#main-menu h1 { animation: slideUp 0.4s ease-out; }
+.menu-buttons { animation: slideUp 0.4s ease-out 0.1s both; }
+#player-stats { animation: slideUp 0.4s ease-out 0.2s both; }

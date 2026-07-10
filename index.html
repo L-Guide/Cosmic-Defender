@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Cosmic Defender - YouTube Playable</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <div class="loader-content">
+      <div class="spinner"></div>
+      <p>Loading Cosmic Defender...</p>
+      <div class="progress-bar"><div id="progress-fill" style="width:0%"></div></div>
+      <p id="load-percent">0%</p>
+    </div>
+  </div>
+
+  <!-- Main Menu -->
+  <div id="main-menu" class="hidden">
+    <h1>COSMIC DEFENDER</h1>
+    <p class="subtitle">Defend the galaxy from alien invasion!</p>
+    <div class="menu-buttons">
+      <button id="btn-play" class="menu-btn">PLAY</button>
+      <button id="btn-shop" class="menu-btn btn-shop">SHOP</button>
+      <button id="btn-how" class="menu-btn">HOW TO PLAY</button>
+      <button id="btn-scores" class="menu-btn">HIGH SCORES</button>
+    </div>
+    <div id="player-stats">
+      <span>🏆 Best: <span id="best-score">0</span></span>
+      <span>📊 Level: <span id="current-level">1</span></span>
+      <span class="coin-stat">🪙 <span id="menu-coins">0</span></span>
+      <span class="star-stat">⭐ <span id="menu-stars">0</span></span>
+    </div>
+  </div>
+
+  <!-- How To Play Screen -->
+  <div id="how-to-play" class="hidden">
+    <h2>HOW TO PLAY</h2>
+    <div class="instructions">
+      <p>Arrow Keys / WASD / Touch to move</p>
+      <p>Auto-shoot at enemies</p>
+      <p>Collect coins for bonus score</p>
+      <p>Defeat bosses to advance levels</p>
+      <p>Press 1-5 or tap items to use them</p>
+      <div class="powerup-info">
+        <p><span class="pu-coin">Coins</span> - Bonus score from kills</p>
+        <p><span class="pu-gift">Gift Boxes</span> - Open for surprises!</p>
+        <p><span class="pu-shield">Shield</span> - Temporary invincibility</p>
+        <p><span class="pu-speed">Speed</span> - Move faster</p>
+        <p><span class="pu-multishot">Multi-shot</span> - Shoot multiple bullets</p>
+        <p><span class="pu-health">Health</span> - Restore HP</p>
+        <p><span class="pu-weapon">Weapon</span> - Upgrade firepower</p>
+        <p><span class="pu-magnet">Magnet</span> - Attract coins & gifts</p>
+      </div>
+      <div class="powerup-info" style="margin-top:8px">
+        <p style="color:#ff4444;font-weight:bold">SHOP ITEMS (buy & use in-game):</p>
+        <p><span style="color:#ff4444;font-weight:bold">Bomb</span> - Clear all enemy bullets</p>
+        <p><span style="color:#ff8800;font-weight:bold">Nuke</span> - Damage ALL enemies</p>
+        <p><span style="color:#44aaff;font-weight:bold">Time Slow</span> - Slow enemies 5s</p>
+        <p><span style="color:#ff00ff;font-weight:bold">Dmg Boost</span> - 3x damage 8s</p>
+        <p><span style="color:#00ff00;font-weight:bold">Heal Potion</span> - Restore 3 HP</p>
+        <p><span style="color:#00ffff;font-weight:bold">Mega Shield</span> - 10s invincibility</p>
+        <p><span style="color:#ff2200;font-weight:bold">Rage Mode</span> - Triple shot + speed 8s</p>
+        <p><span style="color:#aa00ff;font-weight:bold">Black Hole</span> - Pull & crush all enemies</p>
+        <p><span style="color:#ffdd00;font-weight:bold">Coin Booster</span> - 2x coins for 15s</p>
+        <p><span style="color:#ff69b4;font-weight:bold">Full Heal</span> - Restore ALL HP</p>
+        <p><span style="color:#ffaa00;font-weight:bold">Coin Magnet+</span> - Magnet + 2x coins</p>
+        <p><span style="color:#ffdd00;font-weight:bold">Star Burst</span> - +5 Stars instantly</p>
+        <p style="color:#ffdd00;font-weight:bold;margin-top:8px">⭐ STAR SHOP (permanent upgrades):</p>
+        <p><span style="color:#ff69b4;font-weight:bold">Revive</span> - Respawn when you die</p>
+        <p><span style="color:#ffdd00;font-weight:bold">Star Shield/Weapon/Damage/Heal</span> - Permanent boosts</p>
+      </div>
+    </div>
+    <button id="btn-back-how" class="menu-btn">BACK</button>
+  </div>
+
+  <!-- Shop Screen -->
+  <div id="shop-screen" class="hidden">
+    <h2>SHOP</h2>
+    <div class="shop-coins">🪙 <span id="shop-coin-count">0</span> | ⭐ <span id="shop-star-count">0</span></div>
+    <div class="shop-tabs">
+      <button class="shop-tab active" data-tab="upgrades">UPGRADES</button>
+      <button class="shop-tab" data-tab="power">POWER</button>
+      <button class="shop-tab" data-tab="items">ITEMS</button>
+      <button class="shop-tab" data-tab="stars">⭐ STARS</button>
+    </div>
+    <div id="shop-upgrades" class="shop-grid">
+      <div class="shop-item" data-item="hp">
+        <div class="shop-icon emoji-icon">❤️</div>
+        <div class="shop-name">Extra HP</div>
+        <div class="shop-desc">+1 Max Health</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 50</div>
+        <div class="shop-level">Lv. <span id="shop-hp-lv">0</span>/5</div>
+      </div>
+      <div class="shop-item" data-item="dmg">
+        <div class="shop-icon emoji-icon">⚔️</div>
+        <div class="shop-name">Damage Up</div>
+        <div class="shop-desc">+1 Bullet Damage</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 75</div>
+        <div class="shop-level">Lv. <span id="shop-dmg-lv">0</span>/5</div>
+      </div>
+      <div class="shop-item" data-item="spd">
+        <div class="shop-icon emoji-icon">⚡</div>
+        <div class="shop-name">Speed Up</div>
+        <div class="shop-desc">Move Faster</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 40</div>
+        <div class="shop-level">Lv. <span id="shop-spd-lv">0</span>/5</div>
+      </div>
+      <div class="shop-item" data-item="rate">
+        <div class="shop-icon emoji-icon">🔫</div>
+        <div class="shop-name">Fire Rate</div>
+        <div class="shop-desc">Shoot Faster</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 60</div>
+        <div class="shop-level">Lv. <span id="shop-rate-lv">0</span>/5</div>
+      </div>
+      <div class="shop-item" data-item="coin">
+        <div class="shop-icon emoji-icon">🧲</div>
+        <div class="shop-name">Coin Magnet</div>
+        <div class="shop-desc">Attract Coins</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 100</div>
+        <div class="shop-level">Lv. <span id="shop-coin-lv">0</span>/3</div>
+      </div>
+      <div class="shop-item" data-item="crit">
+        <div class="shop-icon emoji-icon">💥</div>
+        <div class="shop-name">Critical Hit</div>
+        <div class="shop-desc">Chance for 2x Damage</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 80</div>
+        <div class="shop-level">Lv. <span id="shop-crit-lv">0</span>/5</div>
+      </div>
+      <div class="shop-item" data-item="regen">
+        <div class="shop-icon emoji-icon">💚</div>
+        <div class="shop-name">HP Regen</div>
+        <div class="shop-desc">Heal 1 HP Per Wave</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 120</div>
+        <div class="shop-level">Lv. <span id="shop-regen-lv">0</span>/3</div>
+      </div>
+      <div class="shop-item" data-item="start">
+        <div class="shop-icon emoji-icon">🎯</div>
+        <div class="shop-name">Start Weapon</div>
+        <div class="shop-desc">Begin With Weapon Lv2</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 200</div>
+        <div class="shop-level">Lv. <span id="shop-start-lv">0</span>/1</div>
+      </div>
+    </div>
+    <div id="shop-power" class="shop-grid hidden">
+      <div class="shop-item power-item" data-item="pierce">
+        <div class="shop-icon emoji-icon">🏹</div>
+        <div class="shop-name">Pierce Shot</div>
+        <div class="shop-desc">Bullets pass thru enemies</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 200</div>
+        <div class="shop-level">Lv. <span id="shop-pierce-lv">0</span>/3</div>
+      </div>
+      <div class="shop-item power-item" data-item="explode">
+        <div class="shop-icon emoji-icon">💣</div>
+        <div class="shop-name">Explosive Shot</div>
+        <div class="shop-desc">Bullets explode on hit</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 300</div>
+        <div class="shop-level">Lv. <span id="shop-explode-lv">0</span>/3</div>
+      </div>
+      <div class="shop-item power-item" data-item="homing">
+        <div class="shop-icon emoji-icon">🎯</div>
+        <div class="shop-name">Homing Shot</div>
+        <div class="shop-desc">Bullets track enemies</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 250</div>
+        <div class="shop-level">Lv. <span id="shop-homing-lv">0</span>/3</div>
+      </div>
+      <div class="shop-item power-item" data-item="bulletrain">
+        <div class="shop-icon emoji-icon">🌧️</div>
+        <div class="shop-name">Bullet Rain</div>
+        <div class="shop-desc">+2 extra projectiles</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 400</div>
+        <div class="shop-level">Lv. <span id="shop-bulletrain-lv">0</span>/3</div>
+      </div>
+      <div class="shop-item power-item" data-item="rapidfire">
+        <div class="shop-icon emoji-icon">🔥</div>
+        <div class="shop-name">Rapid Fire</div>
+        <div class="shop-desc">+40% fire speed</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 350</div>
+        <div class="shop-level">Lv. <span id="shop-rapidfire-lv">0</span>/3</div>
+      </div>
+      <div class="shop-item power-item" data-item="bigbullets">
+        <div class="shop-icon emoji-icon">🔴</div>
+        <div class="shop-name">Big Bullets</div>
+        <div class="shop-desc">2x bullet size, +50% dmg</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 300</div>
+        <div class="shop-level">Lv. <span id="shop-bigbullets-lv">0</span>/2</div>
+      </div>
+      <div class="shop-item power-item" data-item="dmgboost">
+        <div class="shop-icon emoji-icon">💀</div>
+        <div class="shop-name">Mega Damage</div>
+        <div class="shop-desc">+3 base bullet damage</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 500</div>
+        <div class="shop-level">Lv. <span id="shop-dmgboost-lv">0</span>/3</div>
+      </div>
+      <div class="shop-item power-item" data-item="aura">
+        <div class="shop-icon emoji-icon">☀️</div>
+        <div class="shop-name">Damage Aura</div>
+        <div class="shop-desc">Burn nearby enemies</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 400</div>
+        <div class="shop-level">Lv. <span id="shop-aura-lv">0</span>/3</div>
+      </div>
+      <div class="shop-item power-item" data-item="thorns">
+        <div class="shop-icon emoji-icon">🌵</div>
+        <div class="shop-name">Thorns</div>
+        <div class="shop-desc">Reflect enemy bullets</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 250</div>
+        <div class="shop-level">Lv. <span id="shop-thorns-lv">0</span>/3</div>
+      </div>
+      <div class="shop-item power-item" data-item="goldrush">
+        <div class="shop-icon emoji-icon">👑</div>
+        <div class="shop-name">Gold Rush</div>
+        <div class="shop-desc">Enemies drop 2x coins</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 200</div>
+        <div class="shop-level">Lv. <span id="shop-goldrush-lv">0</span>/3</div>
+      </div>
+      <div class="shop-item power-item" data-item="laststand">
+        <div class="shop-icon emoji-icon">🛡️</div>
+        <div class="shop-name">Last Stand</div>
+        <div class="shop-desc">Survive 1 fatal hit/wave</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 500</div>
+        <div class="shop-level">Lv. <span id="shop-laststand-lv">0</span>/1</div>
+      </div>
+      <div class="shop-item power-item" data-item="shieldgen">
+        <div class="shop-icon emoji-icon">🔰</div>
+        <div class="shop-name">Shield Gen</div>
+        <div class="shop-desc">Shield recharges/wave</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 400</div>
+        <div class="shop-level">Lv. <span id="shop-shieldgen-lv">0</span>/2</div>
+      </div>
+    </div>
+    <div id="shop-items" class="shop-grid hidden">
+      <div class="shop-item consumable" data-item="bomb">
+        <div class="shop-icon emoji-icon">💣</div>
+        <div class="shop-name">Bomb</div>
+        <div class="shop-desc">Clear all enemy bullets</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 50</div>
+        <div class="shop-level">Own: <span id="inv-bomb">0</span></div>
+      </div>
+      <div class="shop-item consumable" data-item="nuke">
+        <div class="shop-icon emoji-icon">☢️</div>
+        <div class="shop-name">Nuke</div>
+        <div class="shop-desc">Damage ALL enemies</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 150</div>
+        <div class="shop-level">Own: <span id="inv-nuke">0</span></div>
+      </div>
+      <div class="shop-item consumable" data-item="slow">
+        <div class="shop-icon emoji-icon">⏳</div>
+        <div class="shop-name">Time Slow</div>
+        <div class="shop-desc">Slow all enemies 5s</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 100</div>
+        <div class="shop-level">Own: <span id="inv-slow">0</span></div>
+      </div>
+      <div class="shop-item consumable" data-item="dboost">
+        <div class="shop-icon emoji-icon">⚔️</div>
+        <div class="shop-name">Damage Boost</div>
+        <div class="shop-desc">3x Damage for 8s</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 80</div>
+        <div class="shop-level">Own: <span id="inv-dboost">0</span></div>
+      </div>
+      <div class="shop-item consumable" data-item="heal">
+        <div class="shop-icon emoji-icon">❤️‍🩹</div>
+        <div class="shop-name">Heal Potion</div>
+        <div class="shop-desc">Restore 3 HP</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 60</div>
+        <div class="shop-level">Own: <span id="inv-heal">0</span></div>
+      </div>
+      <div class="shop-item consumable" data-item="megaShield">
+        <div class="shop-icon emoji-icon">🛡️</div>
+        <div class="shop-name">Mega Shield</div>
+        <div class="shop-desc">10s Invincibility</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 120</div>
+        <div class="shop-level">Own: <span id="inv-megaShield">0</span></div>
+      </div>
+      <div class="shop-item consumable" data-item="rage">
+        <div class="shop-icon emoji-icon">😤</div>
+        <div class="shop-name">Rage Mode</div>
+        <div class="shop-desc">Triple shot + speed 8s</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 180</div>
+        <div class="shop-level">Own: <span id="inv-rage">0</span></div>
+      </div>
+      <div class="shop-item consumable" data-item="blackhole">
+        <div class="shop-icon emoji-icon">🌀</div>
+        <div class="shop-name">Black Hole</div>
+        <div class="shop-desc">Pull & crush all enemies</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 250</div>
+        <div class="shop-level">Own: <span id="inv-blackhole">0</span></div>
+      </div>
+      <div class="shop-item consumable" data-item="coinboost">
+        <div class="shop-icon emoji-icon">💰</div>
+        <div class="shop-name">Coin Booster</div>
+        <div class="shop-desc">2x coins for 15s</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 70</div>
+        <div class="shop-level">Own: <span id="inv-coinboost">0</span></div>
+      </div>
+      <div class="shop-item consumable" data-item="fullheal">
+        <div class="shop-icon emoji-icon">💖</div>
+        <div class="shop-name">Full Heal</div>
+        <div class="shop-desc">Restore ALL HP</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 200</div>
+        <div class="shop-level">Own: <span id="inv-fullheal">0</span></div>
+      </div>
+      <div class="shop-item consumable" data-item="doublecoin">
+        <div class="shop-icon emoji-icon">🪙</div>
+        <div class="shop-name">Coin Magnet+</div>
+        <div class="shop-desc">Magnet + 2x coin value</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 90</div>
+        <div class="shop-level">Own: <span id="inv-doublecoin">0</span></div>
+      </div>
+      <div class="shop-item consumable" data-item="starburst">
+        <div class="shop-icon emoji-icon">⭐</div>
+        <div class="shop-name">Star Burst</div>
+        <div class="shop-desc">+5 Stars instantly</div>
+        <div class="shop-cost"><span class="coin-icon">🪙</span> 150</div>
+        <div class="shop-level">Own: <span id="inv-starburst">0</span></div>
+      </div>
+    </div>
+    <div id="shop-stars" class="shop-grid hidden">
+      <div class="shop-item star-item" data-star="revive">
+        <div class="shop-icon emoji-icon">💖</div>
+        <div class="shop-name">Revive</div>
+        <div class="shop-desc">Respawn when you die</div>
+        <div class="shop-cost star-cost">⭐ 10</div>
+        <div class="shop-level">Own: <span id="star-revive">0</span></div>
+      </div>
+      <div class="shop-item star-item" data-star="starshield">
+        <div class="shop-icon emoji-icon">✨</div>
+        <div class="shop-name">Star Shield</div>
+        <div class="shop-desc">Start with shield</div>
+        <div class="shop-cost star-cost">⭐ 8</div>
+        <div class="shop-level">Lv. <span id="star-starshield-lv">0</span>/3</div>
+      </div>
+      <div class="shop-item star-item" data-star="starweapon">
+        <div class="shop-icon emoji-icon">🌟</div>
+        <div class="shop-name">Star Weapon</div>
+        <div class="shop-desc">Start with Weapon Lv3</div>
+        <div class="shop-cost star-cost">⭐ 15</div>
+        <div class="shop-level">Lv. <span id="star-starweapon-lv">0</span>/2</div>
+      </div>
+      <div class="shop-item star-item" data-star="stardamage">
+        <div class="shop-icon emoji-icon">💫</div>
+        <div class="shop-name">Star Damage</div>
+        <div class="shop-desc">+2 base damage permanently</div>
+        <div class="shop-cost star-cost">⭐ 12</div>
+        <div class="shop-level">Lv. <span id="star-stardamage-lv">0</span>/3</div>
+      </div>
+      <div class="shop-item star-item" data-star="starheal">
+        <div class="shop-icon emoji-icon">🌸</div>
+        <div class="shop-name">Star Heal</div>
+        <div class="shop-desc">Regen 1 HP every 8s</div>
+        <div class="shop-cost star-cost">⭐ 10</div>
+        <div class="shop-level">Lv. <span id="star-starheal-lv">0</span>/3</div>
+      </div>
+      <div class="shop-item star-item" data-star="starcombo">
+        <div class="shop-icon emoji-icon">🔥</div>
+        <div class="shop-name">Star Combo</div>
+        <div class="shop-desc">Combo lasts 2x longer</div>
+        <div class="shop-cost star-cost">⭐ 8</div>
+        <div class="shop-level">Lv. <span id="star-starcombo-lv">0</span>/3</div>
+      </div>
+      <div class="shop-item star-item" data-star="starcoins">
+        <div class="shop-icon emoji-icon">💎</div>
+        <div class="shop-name">Star Coins</div>
+        <div class="shop-desc">+100% coin value permanently</div>
+        <div class="shop-cost star-cost">⭐ 15</div>
+        <div class="shop-level">Lv. <span id="star-starcoins-lv">0</span>/3</div>
+      </div>
+      <div class="shop-item star-item" data-star="starmagnet">
+        <div class="shop-icon emoji-icon">🌊</div>
+        <div class="shop-name">Star Magnet</div>
+        <div class="shop-desc">Huge magnet range always</div>
+        <div class="shop-cost star-cost">⭐ 10</div>
+        <div class="shop-level">Lv. <span id="star-starmagnet-lv">0</span>/3</div>
+      </div>
+      <div class="shop-item star-item" data-star="starlucky">
+        <div class="shop-icon emoji-icon">🍀</div>
+        <div class="shop-name">Star Lucky</div>
+        <div class="shop-desc">More gifts & powerups drop</div>
+        <div class="shop-cost star-cost">⭐ 12</div>
+        <div class="shop-level">Lv. <span id="star-starlucky-lv">0</span>/3</div>
+      </div>
+      <div class="shop-item star-item" data-star="starulti">
+        <div class="shop-icon emoji-icon">⛈️</div>
+        <div class="shop-name">Star Ultimate</div>
+        <div class="shop-desc">All stats +10% permanently</div>
+        <div class="shop-cost star-cost">⭐ 25</div>
+        <div class="shop-level">Lv. <span id="star-starulti-lv">0</span>/5</div>
+      </div>
+    </div>
+    <button id="btn-back-shop" class="menu-btn">BACK</button>
+  </div>
+
+  <!-- High Scores Screen -->
+  <div id="scores-screen" class="hidden">
+    <h2>HIGH SCORES</h2>
+    <div id="scores-list"></div>
+    <button id="btn-back-scores" class="menu-btn">BACK</button>
+  </div>
+
+  <!-- Game Canvas -->
+  <canvas id="game-canvas" class="hidden"></canvas>
+
+  <!-- HUD -->
+  <div id="game-hud" class="hidden">
+    <div class="hud-left">
+      <div class="health-bar">
+        <div id="health-fill"></div>
+      </div>
+      <span id="health-text">HP: 5/5</span>
+      <span id="coin-display">🪙 0</span>
+      <span id="star-display">⭐ 0</span>
+    </div>
+    <div class="hud-center">
+      <span id="score-display">Score: 0</span>
+      <span id="level-display">Level 1</span>
+      <div class="wave-progress">
+        <div id="wave-progress-fill"></div>
+      </div>
+      <span id="wave-progress-text">Wave 1/3</span>
+    </div>
+    <div class="hud-right">
+      <span id="wave-display">Wave: 1</span>
+      <span id="combo-display">Combo: x1</span>
+    </div>
+    <div id="item-bar">
+      <div class="item-slot" data-slot="0"><span class="item-key">1</span><span class="item-icon" id="item-icon-0">-</span><span class="item-count" id="item-count-0">0</span></div>
+      <div class="item-slot" data-slot="1"><span class="item-key">2</span><span class="item-icon" id="item-icon-1">-</span><span class="item-count" id="item-count-1">0</span></div>
+      <div class="item-slot" data-slot="2"><span class="item-key">3</span><span class="item-icon" id="item-icon-2">-</span><span class="item-count" id="item-count-2">0</span></div>
+      <div class="item-slot" data-slot="3"><span class="item-key">4</span><span class="item-icon" id="item-icon-3">-</span><span class="item-count" id="item-count-3">0</span></div>
+      <div class="item-slot" data-slot="4"><span class="item-key">5</span><span class="item-icon" id="item-icon-4">-</span><span class="item-count" id="item-count-4">0</span></div>
+    </div>
+  </div>
+
+  <!-- Pause Overlay -->
+  <div id="pause-overlay" class="hidden">
+    <div class="pause-content">
+      <h2>PAUSED</h2>
+      <button id="btn-resume" class="menu-btn">RESUME</button>
+      <button id="btn-quit" class="menu-btn">QUIT</button>
+    </div>
+  </div>
+
+  <!-- Game Over Screen -->
+  <div id="game-over" class="hidden">
+    <h2>GAME OVER</h2>
+    <div class="gameover-stats">
+      <p>🏆 Score: <span id="final-score">0</span></p>
+      <p>👑 Best: <span id="final-best">0</span></p>
+      <p>📊 Level: <span id="final-level">1</span></p>
+      <p>💀 Kills: <span id="final-kills">0</span></p>
+      <p>🪙 Coins: <span id="final-coins">0</span></p>
+      <p>⭐ Stars: <span id="final-stars">0</span></p>
+    </div>
+    <div class="gameover-buttons">
+      <button id="btn-retry" class="menu-btn">RETRY</button>
+      <button id="btn-home" class="menu-btn">HOME</button>
+    </div>
+  </div>
+
+  <!-- Level Complete Screen -->
+  <div id="level-complete" class="hidden">
+    <h2>🏆 LEVEL COMPLETE!</h2>
+    <div class="level-stats">
+      <p>📊 Score: <span id="level-score">0</span></p>
+      <p>⏱️ Time Bonus: <span id="time-bonus">0</span></p>
+      <p>⭐ Total: <span id="total-score">0</span></p>
+    </div>
+    <button id="btn-next-level" class="menu-btn">NEXT LEVEL</button>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
