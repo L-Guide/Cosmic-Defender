@@ -295,13 +295,30 @@ body {
    ============================================ */
 #item-bar {
   position: fixed; bottom: 8px; left: 50%; transform: translateX(-50%);
-  display: flex; gap: 6px; z-index: 25; pointer-events: all;
-  background: rgba(0, 0, 20, 0.7); padding: 5px 8px; border-radius: 10px;
+  display: flex; align-items: center; gap: 4px; z-index: 25; pointer-events: all;
+  background: rgba(0, 0, 20, 0.7); padding: 5px 6px; border-radius: 10px;
   border: 1px solid rgba(0, 150, 255, 0.3);
+  max-width: calc(100vw - 16px);
 }
 
+#item-slots {
+  display: flex; gap: 5px; overflow-x: auto; overflow-y: hidden;
+  scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; -ms-overflow-style: none;
+}
+#item-slots::-webkit-scrollbar { display: none; }
+
+.item-scroll-btn {
+  width: clamp(22px, 6vw, 28px); height: clamp(36px, 10vw, 48px);
+  background: rgba(0, 60, 120, 0.5); border: 1px solid rgba(0, 150, 255, 0.3);
+  border-radius: 6px; color: #88ccee; font-size: clamp(12px, 3vw, 16px);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: all 0.1s; user-select: none;
+}
+.item-scroll-btn:active { background: rgba(0, 100, 200, 0.7); color: #fff; }
+
 .item-slot {
-  position: relative; width: clamp(44px, 12vw, 56px); height: clamp(44px, 12vw, 56px);
+  flex-shrink: 0; position: relative; width: clamp(48px, 12vw, 58px); height: clamp(56px, 13vw, 64px);
   background: rgba(0, 40, 80, 0.6); border: 2px solid #003366;
   border-radius: 8px; display: flex; flex-direction: column;
   align-items: center; justify-content: center; cursor: pointer;
@@ -312,8 +329,13 @@ body {
 
 .item-slot.has-item { border-color: #0088ff; }
 
+.item-slot.item-buy { border-color: #335566; border-style: dashed; }
+.item-slot.item-buy.cant-afford { border-color: #333; opacity: 0.5; }
+.item-slot.item-buy:active { border-color: #ffdd00; background: rgba(255, 200, 0, 0.15); }
+.item-slot.item-buy.cant-afford:active { border-color: #333; background: rgba(0, 40, 80, 0.6); }
+
 .item-slot.on-cooldown {
-  opacity: 0.4; border-color: #444; pointer-events: none;
+  opacity: 0.5; border-color: #444;
 }
 
 .item-key {
@@ -322,16 +344,32 @@ body {
 }
 
 .item-icon {
-  font-size: clamp(16px, 4.5vw, 22px); font-weight: 900;
-  color: #556677; line-height: 1;
+  font-size: clamp(18px, 5vw, 24px); font-weight: 900;
+  color: #00ccff; line-height: 1;
 }
 
-.item-slot.has-item .item-icon { color: #00ccff; }
+.item-slot.has-item .item-icon { color: #00ccff; margin-top: 16px; }
+.item-slot.item-buy .item-icon { opacity: 0.35; }
+
+.item-buy-top {
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  font-size: clamp(11px, 2.8vw, 15px); color: #ffdd00; font-weight: bold;
+  background: rgba(0, 30, 60, 0.95); padding: 0 5px;
+  border-radius: 0 0 5px 5px; line-height: 1.2;
+  cursor: pointer; z-index: 3;
+  border: 1px solid rgba(255, 200, 0, 0.4); border-top: none;
+}
 
 .item-count {
-  position: absolute; bottom: 1px; right: 3px;
-  font-size: clamp(8px, 2vw, 10px); color: #ffdd00; font-weight: bold;
+  position: absolute; bottom: 2px; right: 4px;
+  font-size: clamp(10px, 2.5vw, 13px); color: #00ff88; font-weight: bold;
 }
+
+.item-price-buy {
+  font-size: clamp(9px, 2.5vw, 12px); color: #ffdd00; font-weight: bold;
+  line-height: 1.1; max-width: 100%; overflow: hidden; text-overflow: ellipsis;
+}
+.item-slot.item-buy.cant-afford .item-price-buy { color: #666; }
 
 /* ============================================
    HIGH SCORES
