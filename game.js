@@ -111,7 +111,13 @@
     if(k==='ArrowUp'||k==='w'||k==='W')keys.ArrowUp=true;
     if(k==='ArrowDown'||k==='s'||k==='S')keys.ArrowDown=true;
     initAudio();
-    if((e.code==='Escape'||e.code==='KeyP'||k==='Escape'||k==='p'||k==='P')&&state==='playing'){state='paused';document.getElementById('pause-overlay').classList.remove('hidden');return;}
+    if((e.code==='Escape'||k==='Escape')&&state==='playing'){state='paused';document.getElementById('pause-overlay').classList.remove('hidden');return;}
+    if(k==='Escape'||e.code==='Escape'){
+      if(!document.getElementById('how-to-play').classList.contains('hidden')){showMenu();return;}
+      if(!document.getElementById('high-scores').classList.contains('hidden')){showMenu();return;}
+      if(!document.getElementById('shop-screen').classList.contains('hidden')){showMenu();return;}
+      if(!document.getElementById('pause-overlay').classList.contains('hidden')){state='playing';document.getElementById('pause-overlay').classList.add('hidden');lastTime=performance.now();requestAnimationFrame(loop);return;}
+    }
       if(state==='playing'){
         for(var ni=0;ni<12;ni++){
           var code='Digit'+(ni+1);
@@ -154,18 +160,31 @@
 
   // ========== SDK ==========
   var ytGame=null;
+  var inYTPlayables=typeof ytgame!=='undefined'&&ytgame&&ytgame.IN_PLAYABLES_ENV;
   try{
-    if(typeof YT!=='undefined'&&YT.Game){ytGame=new YT.Game();
-      ytGame.onAudioEnabledChange(function(on){audioOn=on;});
-      ytGame.onPause(function(){if(state==='playing'){state='paused';document.getElementById('pause-overlay').classList.remove('hidden');}});
-      ytGame.onResume(function(){if(state==='paused'){state='playing';document.getElementById('pause-overlay').classList.add('hidden');lastTime=performance.now();requestAnimationFrame(loop);}});
+    if(inYTPlayables){
+      ytGame=ytgame;
+      if(ytGame.system){
+        try{audioOn=ytGame.system.isAudioEnabled();}catch(e){}
+        try{ytGame.system.onAudioEnabledChange(function(on){audioOn=on;});}catch(e){}
+        try{ytGame.system.onPause(function(){
+          if(state==='playing'){state='paused';document.getElementById('pause-overlay').classList.remove('hidden');}
+          sdkSave();
+        });}catch(e){}
+        try{ytGame.system.onResume(function(){
+          if(state==='paused'){state='playing';document.getElementById('pause-overlay').classList.add('hidden');lastTime=performance.now();requestAnimationFrame(loop);}
+        });}catch(e){}
+      }
     }
   }catch(e){}
-  function sdkReady(){try{if(ytGame)ytGame.gameReady();}catch(e){}}
-  function sdkScore(s){try{if(ytGame)ytGame.sendScore(s);}catch(e){}}
-  function sdkSave(){var d=JSON.stringify({b:bestScore,l:level,w:weaponLevel,c:coins,s:shopUpgrades,p:powerUps,su:starUps,st:stars,inv:inventory});try{if(ytGame)ytGame.saveData(d);else localStorage.setItem('cd_save',d);}catch(e){}}
+  function sdkReady(){try{if(ytGame&&ytGame.game)ytGame.game.gameReady();}catch(e){}}
+  function sdkFirstFrame(){try{if(ytGame&&ytGame.game)ytGame.game.firstFrameReady();}catch(e){}}
+  function sdkScore(s){try{if(ytGame&&ytGame.engagement)ytGame.engagement.sendScore({value:Math.floor(s)});}catch(e){}}
+  function sdkSave(){var d=JSON.stringify({b:bestScore,l:level,w:weaponLevel,c:coins,s:shopUpgrades,p:powerUps,su:starUps,st:stars,inv:inventory});try{if(ytGame&&ytGame.game)ytGame.game.saveData(d);else localStorage.setItem('cd_save',d);}catch(e){}}
   function sdkLoad(){
-    try{if(ytGame){ytGame.loadData(function(err,d){if(!err&&d){try{var p=JSON.parse(d);bestScore=p.b||0;level=p.l||1;weaponLevel=p.w||1;coins=p.c||0;stars=p.st||0;if(p.s)Object.keys(p.s).forEach(function(k){shopUpgrades[k]=p.s[k]||0;});if(p.p)Object.keys(p.p).forEach(function(k){powerUps[k]=p.p[k]||0;});if(p.su)Object.keys(p.su).forEach(function(k){starUps[k]=p.su[k]||0;});if(p.inv)Object.keys(p.inv).forEach(function(k){inventory[k]=p.inv[k]||0;});}catch(e){}}});return;}}catch(e){}
+    if(ytGame&&ytGame.game){
+      try{ytGame.game.loadData().then(function(d){if(d){try{var p=JSON.parse(d);bestScore=p.b||0;level=p.l||1;weaponLevel=p.w||1;coins=p.c||0;stars=p.st||0;if(p.s)Object.keys(p.s).forEach(function(k){shopUpgrades[k]=p.s[k]||0;});if(p.p)Object.keys(p.p).forEach(function(k){powerUps[k]=p.p[k]||0;});if(p.su)Object.keys(p.su).forEach(function(k){starUps[k]=p.su[k]||0;});if(p.inv)Object.keys(p.inv).forEach(function(k){inventory[k]=p.inv[k]||0;});}catch(e){}}}).catch(function(){});}catch(e){}return;
+    }
     try{var s=localStorage.getItem('cd_save');if(s){var p=JSON.parse(s);bestScore=p.b||0;level=p.l||1;weaponLevel=p.w||1;coins=p.c||0;stars=p.st||0;if(p.s)Object.keys(p.s).forEach(function(k){shopUpgrades[k]=p.s[k]||0;});if(p.p)Object.keys(p.p).forEach(function(k){powerUps[k]=p.p[k]||0;});if(p.su)Object.keys(p.su).forEach(function(k){starUps[k]=p.su[k]||0;});if(p.inv)Object.keys(p.inv).forEach(function(k){inventory[k]=p.inv[k]||0;});}}catch(e){}
   }
 
@@ -863,7 +882,7 @@
 
   // ========== INIT ==========
   sdkLoad();
-  try{if(ytGame)ytGame.firstFrameReady();}catch(e){}
+  try{sdkFirstFrame();}catch(e){}
 
   var pf=document.getElementById('progress-fill');
   var lp=document.getElementById('load-percent');
@@ -886,7 +905,6 @@
   document.getElementById('btn-back-scores').addEventListener('click',showMenu);
   document.getElementById('btn-back-shop').addEventListener('click',showMenu);
   document.getElementById('btn-resume').addEventListener('click',function(){state='playing';document.getElementById('pause-overlay').classList.add('hidden');lastTime=performance.now();requestAnimationFrame(loop);});
-  document.getElementById('btn-quit').addEventListener('click',function(){document.getElementById('pause-overlay').classList.add('hidden');if(score>bestScore)bestScore=score;sdkSave();showMenu();});
   document.getElementById('btn-retry').addEventListener('click',startGame);
   document.getElementById('btn-home').addEventListener('click',showMenu);
   document.getElementById('btn-next-level').addEventListener('click',function(){wave=1;startGame();});
